@@ -1,0 +1,6 @@
+name: KnokedDown
+version: 0.1
+api-version: 1.16
+main: com.windskull.KnockedDown.KnockedDownCore
+autors: [WindSkull]
+depend: [PosePlugin]
