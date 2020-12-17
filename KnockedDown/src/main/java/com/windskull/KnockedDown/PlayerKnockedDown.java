@@ -52,7 +52,7 @@ public class PlayerKnockedDown extends BukkitRunnable
 	public static int TIME_TO_DEATH = 60;
 	public static int TIME_TO_REANIMATE = 15;
 	public static int PLAYER_HEALTH_AFTER_REANIMATION = 10;
-	public static int PLAYER_HEALTH_AFTER_KNOKDOWN = 4;
+	public static int PLAYER_HEALTH_AFTER_KNOCKDOWN = 4;
 
 	public static boolean HELPER_MOVE_WHILE_REANIMATION = false;
 	public static boolean HELPER_CAN_PICKUP = true;
@@ -105,7 +105,7 @@ public class PlayerKnockedDown extends BukkitRunnable
 		{
 			disablePlayerPose();
 			player.sendMessage(KNOCKEDDOWN_MESSAGE);
-			player.setHealth(PLAYER_HEALTH_AFTER_KNOKDOWN);
+			player.setHealth(PLAYER_HEALTH_AFTER_KNOCKDOWN);
 
 			poseObject.changePose(PoseBuilder.builder(EnumPose.LYING).option(EnumPoseOption.HEAD_ROTATION, false).build(poseObject));
 

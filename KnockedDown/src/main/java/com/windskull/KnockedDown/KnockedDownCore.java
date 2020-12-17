@@ -39,6 +39,7 @@ public class KnockedDownCore extends JavaPlugin implements Listener
 		Bukkit.getPluginManager().registerEvents(this, this);
 		saveConfigDefault();
 		loadConfigValues();
+
 	}
 
 	public void saveConfigDefault()
@@ -62,7 +63,7 @@ public class KnockedDownCore extends JavaPlugin implements Listener
 		c.addDefault("TIME_TO_DEATH", 60);
 		c.addDefault("TIME_TO_REANIMATE", 15);
 		c.addDefault("PLAYER_HEALTH_AFTER_REANIMATION", 10);
-		c.addDefault("PLAYER_HEALTH_AFTER_KNOKDOWN", 4);
+		c.addDefault("PLAYER_HEALTH_AFTER_KNOCKDOWN", 4);
 
 		c.addDefault("HELPER_MOVE_WHILE_REANIMATION", false);
 		c.addDefault("HELPER_CAN_PICKUP", true);
@@ -91,7 +92,7 @@ public class KnockedDownCore extends JavaPlugin implements Listener
 		PlayerKnockedDown.TIME_TO_DEATH = c.getInt("TIME_TO_DEATH", 60);
 		PlayerKnockedDown.TIME_TO_REANIMATE = c.getInt("TIME_TO_REANIMATE", 15);
 		PlayerKnockedDown.PLAYER_HEALTH_AFTER_REANIMATION = c.getInt("PLAYER_HEALTH_AFTER_REANIMATION", 10);
-		PlayerKnockedDown.PLAYER_HEALTH_AFTER_KNOKDOWN = c.getInt("PLAYER_HEALTH_AFTER_KNOKDOWN", 4);
+		PlayerKnockedDown.PLAYER_HEALTH_AFTER_KNOCKDOWN = c.getInt("PLAYER_HEALTH_AFTER_KNOCKDOWN", 4);
 
 		PlayerKnockedDown.HELPER_MOVE_WHILE_REANIMATION = c.getBoolean("HELPER_MOVE_WHILE_REANIMATION", false);
 		PlayerKnockedDown.HELPER_CAN_PICKUP = c.getBoolean("HELPER_CAN_PICKUP", true);
