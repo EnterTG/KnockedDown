@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -17,6 +18,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.windskull.KnockedDown.Listeners.PlayerBlockIteractionListener;
+import com.windskull.KnockedDown.Listeners.PlayerDoDmgListener;
+
 import net.md_5.bungee.api.ChatColor;
 import ru.armagidon.poseplugin.api.events.StopPosingEvent;
 import ru.armagidon.poseplugin.api.poses.EnumPose;
@@ -24,22 +28,27 @@ import ru.armagidon.poseplugin.api.poses.EnumPose;
 public class KnockedDownCore extends JavaPlugin implements Listener
 {
 
+	public static boolean CAN_DO_DMG;
+	public static boolean CAN_DIG;
+	
 	private static KnockedDownCore sing;
 
 	public static KnockedDownCore getInstance()
-	{
-		if (sing == null)
-			sing = new KnockedDownCore();
+	{	
 		return sing;
 	}
 
 	@Override
 	public void onEnable()
 	{
+		sing = this;
 		Bukkit.getPluginManager().registerEvents(this, this);
 		saveConfigDefault();
 		loadConfigValues();
-
+		if(!CAN_DO_DMG)
+			Bukkit.getPluginManager().registerEvents(new PlayerDoDmgListener(this), this);
+		if(!CAN_DIG)
+			Bukkit.getPluginManager().registerEvents(new PlayerBlockIteractionListener(this), this);
 	}
 
 	public void saveConfigDefault()
@@ -68,6 +77,9 @@ public class KnockedDownCore extends JavaPlugin implements Listener
 		c.addDefault("HELPER_MOVE_WHILE_REANIMATION", false);
 		c.addDefault("HELPER_CAN_PICKUP", true);
 		c.addDefault("USE_SWIM_PICKUP", false);
+		
+		c.addDefault("CAN_DO_DMG", false);
+		c.addDefault("CAN_DIG", false);
 		c.options().copyDefaults(true);
 		saveConfig();
 	}
@@ -97,6 +109,9 @@ public class KnockedDownCore extends JavaPlugin implements Listener
 		PlayerKnockedDown.HELPER_MOVE_WHILE_REANIMATION = c.getBoolean("HELPER_MOVE_WHILE_REANIMATION", false);
 		PlayerKnockedDown.HELPER_CAN_PICKUP = c.getBoolean("HELPER_CAN_PICKUP", true);
 		PlayerKnockedDown.USE_SWIM_PICKUP = c.getBoolean("USE_SWIM_PICKUP", false);
+		
+		CAN_DO_DMG = c.getBoolean("CAN_DO_DMG", false);
+		CAN_DIG = c.getBoolean("CAN_DIG", false);
 	}
 
 	public ConcurrentHashMap<Player, PlayerKnockedDown> knockedDownPlayers = new ConcurrentHashMap<Player, PlayerKnockedDown>();
@@ -124,14 +139,17 @@ public class KnockedDownCore extends JavaPlugin implements Listener
 					PlayerKnockedDown knoked = new PlayerKnockedDown(this, player);
 					if (knoked.knockDown(e.getEntity()))
 					{
-						knoked.runTaskTimer(this, 0, 20);
 						knockedDownPlayers.put(player, knoked);
+						knoked.runTaskTimer(this, 0, 20);
 						e.setCancelled(true);
 					}
 				}
 			}
 		}
 	}
+	
+
+	
 
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent e)
@@ -143,7 +161,7 @@ public class KnockedDownCore extends JavaPlugin implements Listener
 		}
 	}
 
-	// Shift + rmb to renimate rmp
+	// Shift + rmb to renimate rmp to pick up
 	@EventHandler
 	public void playerInteractionWithKnocked(PlayerInteractAtEntityEvent e)
 	{
