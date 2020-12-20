@@ -190,7 +190,7 @@ public class KnockedDownCore extends JavaPlugin implements Listener
 		}
 	}
 
-	@EventHandler(ignoreCancelled = true)
+	@EventHandler
 	public void onPlayerSwap(PlayerSwapHandItemsEvent e)
 	{
 
@@ -202,7 +202,7 @@ public class KnockedDownCore extends JavaPlugin implements Listener
 		}
 	}
 
-	@EventHandler(ignoreCancelled = true)
+	@EventHandler
 	public void onPlayerDropItem(PlayerDropItemEvent e)
 	{
 		Player player = e.getPlayer();
